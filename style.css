@@ -1,0 +1,1117 @@
+* {
+  box-sizing: border-box;
+  }
+
+html,
+body {
+margin: 0;
+width: 100%;
+height: 100%;
+
+
+font-family:
+    Inter,
+    Segoe UI,
+    Arial,
+    sans-serif;
+
+background: #06100b;
+color: #e8fff1;
+
+overflow: hidden;
+
+
+}
+
+/* ==========================================
+🌴 TOP BAR
+========================================== */
+
+.topbar {
+height: 64px;
+
+
+display: flex;
+align-items: center;
+
+padding: 0 18px;
+
+gap: 12px;
+
+background:
+    linear-gradient(
+        180deg,
+        #10251a,
+        #0b1b13
+    );
+
+border-bottom: 1px solid #244534;
+
+box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.25);
+
+position: relative;
+z-index: 10;
+
+
+}
+
+/* ==========================================
+BRAND
+========================================== */
+
+.brand {
+display: flex;
+align-items: center;
+
+
+gap: 10px;
+
+
+}
+
+.brandIcon {
+width: 36px;
+height: 36px;
+
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+background: #143522;
+
+border: 1px solid #2c6145;
+
+border-radius: 9px;
+
+font-size: 19px;
+
+box-shadow:
+    0 0 14px rgba(45, 150, 90, 0.15);
+
+
+}
+
+.brandName {
+font-size: 15px;
+font-weight: 700;
+
+
+letter-spacing: 0.2px;
+
+
+}
+
+.brandSub {
+margin-top: 2px;
+
+
+color: #6e9180;
+
+font-size: 11px;
+
+
+}
+
+.version {
+padding: 4px 8px;
+
+
+border-radius: 6px;
+
+background: #10271b;
+
+border: 1px solid #234634;
+
+color: #7ca08d;
+
+font-family: Consolas, monospace;
+
+font-size: 11px;
+
+
+}
+
+.topSpacer {
+flex: 1;
+}
+
+/* ==========================================
+STATUS
+========================================== */
+
+.status {
+display: flex;
+align-items: center;
+
+
+gap: 7px;
+
+color: #8caf9d;
+
+font-size: 12px;
+
+margin-right: 5px;
+
+
+}
+
+.statusDot {
+width: 7px;
+height: 7px;
+
+
+border-radius: 50%;
+
+background: #45d985;
+
+box-shadow:
+    0 0 8px rgba(69, 217, 133, 0.7);
+
+
+}
+
+/* ==========================================
+BUTTONS
+========================================== */
+
+button {
+font-family: inherit;
+}
+
+.toolbarButton,
+.runButton {
+border: 1px solid #294b39;
+
+
+border-radius: 8px;
+
+padding: 9px 14px;
+
+color: #eafff1;
+
+cursor: pointer;
+
+transition:
+    background 0.15s,
+    border 0.15s,
+    transform 0.15s;
+
+
+}
+
+.toolbarButton {
+background: #10271b;
+}
+
+.toolbarButton:hover {
+background: #173a27;
+
+
+border-color: #3a684e;
+
+
+}
+
+.runButton {
+background:
+linear-gradient(
+135deg,
+#238452,
+#17643e
+);
+
+
+border-color: #3aa76b;
+
+font-weight: 700;
+
+box-shadow:
+    0 0 14px rgba(45, 180, 105, 0.18);
+
+
+}
+
+.runButton:hover {
+background:
+linear-gradient(
+135deg,
+#2a9b61,
+#1c7549
+);
+
+
+transform: translateY(-1px);
+
+
+}
+
+.runButton:active,
+.toolbarButton:active {
+transform: translateY(0);
+}
+
+/* ==========================================
+APPLICATION
+========================================== */
+
+.app {
+height: calc(100vh - 64px);
+
+
+display: flex;
+
+min-width: 0;
+
+
+}
+
+/* ==========================================
+📁 SIDEBAR
+========================================== */
+
+.sidebar {
+width: 220px;
+
+
+flex-shrink: 0;
+
+display: flex;
+flex-direction: column;
+
+background: #08140e;
+
+border-right: 1px solid #223f31;
+
+
+}
+
+/* ==========================================
+SIDEBAR HEADER
+========================================== */
+
+.sidebarHeader {
+height: 48px;
+
+
+padding: 0 12px;
+
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+border-bottom: 1px solid #1b3528;
+
+
+}
+
+.sidebarTitle {
+color: #779b88;
+
+
+font-size: 11px;
+
+font-weight: 800;
+
+letter-spacing: 1px;
+
+
+}
+
+.newFileButton {
+width: 27px;
+height: 27px;
+
+
+padding: 0;
+
+border: 1px solid #2a4c3a;
+
+border-radius: 6px;
+
+background: #10291c;
+
+color: #a9d9bb;
+
+font-size: 18px;
+
+line-height: 1;
+
+cursor: pointer;
+
+transition: 0.15s;
+
+
+}
+
+.newFileButton:hover {
+background: #1b432d;
+
+
+border-color: #3d7655;
+
+
+}
+
+/* ==========================================
+FOLDER
+========================================== */
+
+.folder {
+padding: 14px 9px;
+}
+
+.folderTitle {
+padding: 5px 8px 9px;
+
+
+color: #688875;
+
+font-size: 11px;
+
+font-weight: 700;
+
+letter-spacing: 0.5px;
+
+
+}
+
+/* ==========================================
+FILES
+========================================== */
+
+.file {
+display: flex;
+align-items: center;
+
+
+gap: 8px;
+
+padding: 9px 10px;
+
+margin: 2px 0;
+
+border-radius: 7px;
+
+color: #c8e6d3;
+
+font-family: Consolas, monospace;
+
+font-size: 13px;
+
+cursor: pointer;
+
+transition:
+    background 0.15s,
+    color 0.15s;
+
+
+}
+
+.fileIcon {
+font-size: 13px;
+}
+
+.file:hover {
+background: #10281b;
+
+
+color: white;
+
+
+}
+
+.file.active {
+background:
+linear-gradient(
+90deg,
+#17482e,
+#123923
+);
+
+
+color: #eafff1;
+
+border-left: 2px solid #42c978;
+
+padding-left: 8px;
+
+box-shadow:
+    inset 0 0 12px rgba(45, 180, 105, 0.08);
+
+
+}
+
+/* ==========================================
+SIDEBAR BOTTOM
+========================================== */
+
+.sidebarBottom {
+margin-top: auto;
+
+
+padding: 12px;
+
+border-top: 1px solid #1b3528;
+
+
+}
+
+.engineStatus {
+display: flex;
+align-items: center;
+
+
+gap: 7px;
+
+color: #8cad99;
+
+font-size: 11px;
+
+
+}
+
+.engineVersion {
+margin-top: 6px;
+
+
+color: #4d705c;
+
+font-size: 10px;
+
+
+}
+
+/* ==========================================
+💻 WORKSPACE
+========================================== */
+
+.workspace {
+flex: 1;
+
+
+min-width: 0;
+min-height: 0;
+
+display: flex;
+flex-direction: column;
+
+background: #060e09;
+
+
+}
+
+/* ==========================================
+EDITOR HEADER
+========================================== */
+
+.editorHeader {
+height: 42px;
+
+
+display: flex;
+align-items: stretch;
+
+background: #09160f;
+
+border-bottom: 1px solid #1d382a;
+
+
+}
+
+.tab {
+min-width: 150px;
+
+
+padding: 0 13px;
+
+display: flex;
+align-items: center;
+
+gap: 8px;
+
+border-right: 1px solid #1d382a;
+
+color: #8aa997;
+
+font-size: 12px;
+
+
+}
+
+.activeTab {
+background: #0c1c13;
+
+
+color: #e4fff0;
+
+border-top: 2px solid #35bd70;
+
+
+}
+
+.tabIcon {
+font-size: 13px;
+}
+
+.tabClose {
+margin-left: auto;
+
+
+color: #527260;
+
+font-size: 16px;
+
+cursor: pointer;
+
+
+}
+
+.tabClose:hover {
+color: #b9d7c4;
+}
+
+.editorHeaderSpace {
+flex: 1;
+}
+
+.languageBadge {
+align-self: center;
+
+
+margin-right: 14px;
+
+padding: 4px 7px;
+
+border-radius: 5px;
+
+background: #10251a;
+
+border: 1px solid #234634;
+
+color: #65917a;
+
+font-family: Consolas, monospace;
+
+font-size: 10px;
+
+font-weight: bold;
+
+
+}
+
+/* ==========================================
+EDITORS AREA
+========================================== */
+
+.editors {
+flex: 1;
+
+
+min-height: 0;
+
+display: flex;
+
+
+}
+
+/* ==========================================
+📝 CODE EDITOR
+========================================== */
+
+.editor {
+flex: 1;
+
+
+min-width: 0;
+
+display: flex;
+
+background:
+    linear-gradient(
+        90deg,
+        #07110b,
+        #08130d
+    );
+
+
+}
+
+/* ==========================================
+LINE NUMBERS
+========================================== */
+
+#lineNumbers {
+width: 58px;
+
+
+flex-shrink: 0;
+
+padding: 18px 12px;
+
+text-align: right;
+
+color: #3d5b49;
+
+background: #07110b;
+
+border-right: 1px solid #10271b;
+
+font-family: Consolas, "Courier New", monospace;
+
+font-size: 13px;
+
+line-height: 1.7;
+
+user-select: none;
+
+overflow: hidden;
+
+
+}
+
+/* ==========================================
+CODE AREA
+========================================== */
+
+#code {
+flex: 1;
+
+
+min-width: 0;
+
+width: 100%;
+height: 100%;
+
+resize: none;
+
+border: none;
+outline: none;
+
+padding: 18px 18px;
+
+background: transparent;
+
+color: #dfffea;
+
+caret-color: #59e092;
+
+font-family:
+    Consolas,
+    "Courier New",
+    monospace;
+
+font-size: 14px;
+
+line-height: 1.7;
+
+tab-size: 4;
+
+white-space: pre;
+
+overflow: auto;
+
+scrollbar-width: thin;
+scrollbar-color: #244735 #08120c;
+
+
+}
+
+#code::selection {
+background: #24583a;
+}
+
+/* ==========================================
+SCROLLBAR
+========================================== */
+
+#code::-webkit-scrollbar,
+#previewOutput::-webkit-scrollbar,
+#consoleOutput::-webkit-scrollbar {
+width: 9px;
+height: 9px;
+}
+
+#code::-webkit-scrollbar-track,
+#previewOutput::-webkit-scrollbar-track,
+#consoleOutput::-webkit-scrollbar-track {
+background: #07110b;
+}
+
+#code::-webkit-scrollbar-thumb,
+#previewOutput::-webkit-scrollbar-thumb,
+#consoleOutput::-webkit-scrollbar-thumb {
+background: #244735;
+
+
+border-radius: 10px;
+
+
+}
+
+#code::-webkit-scrollbar-thumb:hover,
+#previewOutput::-webkit-scrollbar-thumb:hover,
+#consoleOutput::-webkit-scrollbar-thumb:hover {
+background: #315d44;
+}
+
+/* ==========================================
+🌐 PREVIEW
+========================================== */
+
+.preview {
+width: 40%;
+
+
+min-width: 300px;
+
+display: flex;
+flex-direction: column;
+
+background: white;
+
+border-left: 1px solid #274634;
+
+
+}
+
+/* ==========================================
+PREVIEW HEADER
+========================================== */
+
+.panelHeader {
+height: 42px;
+
+
+flex-shrink: 0;
+
+display: flex;
+align-items: center;
+
+padding: 0 13px;
+
+background: #0b1911;
+
+border-bottom: 1px solid #274634;
+
+
+}
+
+.panelTitle {
+display: flex;
+align-items: center;
+
+
+gap: 7px;
+
+color: #91b5a0;
+
+font-size: 11px;
+
+font-weight: 800;
+
+letter-spacing: 0.7px;
+
+
+}
+
+.panelStatus {
+margin-left: auto;
+
+
+padding: 3px 7px;
+
+border-radius: 5px;
+
+background: #102a1c;
+
+color: #61a67d;
+
+font-size: 10px;
+
+
+}
+
+/* ==========================================
+PREVIEW CONTENT
+========================================== */
+
+#previewOutput {
+flex: 1;
+
+
+padding: 24px;
+
+background: #ffffff;
+
+color: #111111;
+
+overflow: auto;
+
+
+}
+
+#previewOutput h1 {
+margin-top: 0;
+
+
+font-family: Arial, sans-serif;
+
+
+}
+
+#previewOutput p {
+font-family: Arial, sans-serif;
+
+
+line-height: 1.5;
+
+
+}
+
+#previewOutput button {
+padding: 10px 16px;
+
+
+border: none;
+
+border-radius: 7px;
+
+background: #1d7049;
+
+color: white;
+
+cursor: pointer;
+
+
+}
+
+/* ==========================================
+🧠 CONSOLE
+========================================== */
+
+.console {
+height: 175px;
+
+
+flex-shrink: 0;
+
+display: flex;
+flex-direction: column;
+
+background: #040906;
+
+border-top: 1px solid #244433;
+
+
+}
+
+/* ==========================================
+CONSOLE HEADER
+========================================== */
+
+.consoleHeader {
+height: 38px;
+
+
+flex-shrink: 0;
+
+display: flex;
+align-items: center;
+
+padding: 0 13px;
+
+background: #08130d;
+
+border-bottom: 1px solid #1b3527;
+
+
+}
+
+.consoleTitle {
+display: flex;
+align-items: center;
+
+
+gap: 7px;
+
+color: #87aa96;
+
+font-size: 11px;
+
+font-weight: 800;
+
+letter-spacing: 0.6px;
+
+
+}
+
+.consoleTitle span {
+color: #46ce7d;
+
+
+font-size: 13px;
+
+
+}
+
+.consoleHint {
+margin-left: auto;
+
+
+color: #4d6d59;
+
+font-size: 10px;
+
+
+}
+
+/* ==========================================
+CONSOLE OUTPUT
+========================================== */
+
+#consoleOutput {
+flex: 1;
+
+
+padding: 11px 14px;
+
+overflow: auto;
+
+font-family:
+    Consolas,
+    "Courier New",
+    monospace;
+
+font-size: 12px;
+
+line-height: 1.5;
+
+
+}
+
+.consoleLine {
+margin-bottom: 5px;
+}
+
+.success {
+color: #65d994;
+}
+
+.error {
+color: #ff7777;
+}
+
+.info {
+color: #82a991;
+}
+
+/* ==========================================
+📱 RESPONSIVE
+========================================== */
+
+@media (max-width: 950px) {
+
+
+.sidebar {
+    width: 175px;
+}
+
+.preview {
+    width: 38%;
+    min-width: 250px;
+}
+
+.status {
+    display: none;
+}
+
+
+}
+
+@media (max-width: 700px) {
+
+
+.sidebar {
+    display: none;
+}
+
+.preview {
+    display: none;
+}
+
+.brandSub,
+.version {
+    display: none;
+}
+
+.topbar {
+    padding: 0 10px;
+}
+
+.toolbarButton,
+.runButton {
+    padding: 8px 10px;
+}
+.codeArea {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+#highlightedCode,
+#code {
+    position: absolute;
+    inset: 0;
+
+    margin: 0;
+    padding: 18px 12px;
+
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.6;
+
+    white-space: pre;
+    tab-size: 4;
+}
+
+#highlightedCode {
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#code {
+    z-index: 2;
+
+    background: transparent;
+    color: transparent;
+
+    caret-color: white;
+
+    border: none;
+    outline: none;
+
+    resize: none;
+}
+
+#highlightedCode {
+    z-index: 1;
+}
+.syntax-function {
+    color: #6ee7b7;
+    font-weight: bold;
+}
+
+.syntax-string {
+    color: #fbbf77;
+}
+
+.syntax-comment {
+    color: #6b8f7b;
+    font-style: italic;
+}
+
+
+}

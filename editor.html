@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>JungleScript Editor</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:,">
+
+</head>
+
+<body>
+
+
+<!-- ==========================================
+     🌴 TOP BAR
+     ========================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+        <div class="brandIcon">🌴</div>
+
+        <div>
+            <div class="brandName">JungleScript</div>
+            <div class="brandSub">Online Editor</div>
+        </div>
+    </div>
+
+    <div class="version">v0.2</div>
+
+    <div class="topSpacer"></div>
+
+    <div class="status">
+        <span class="statusDot"></span>
+        Ready
+    </div>
+
+    <button id="downloadButton" class="toolbarButton">
+        💾 Download
+    </button>
+
+    <button id="runButton" class="runButton">
+        ▶ Run
+    </button>
+    <button id="loadCodeButton">📂 Load Code</button>
+
+</header>
+
+
+<!-- ==========================================
+     🧰 MAIN APPLICATION
+     ========================================== -->
+
+<main class="app">
+
+    <!-- ======================================
+         📁 FILE EXPLORER
+         ====================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebarHeader">
+
+            <div class="sidebarTitle">
+                EXPLORER
+            </div>
+
+            <button
+                id="newFileButton"
+                class="newFileButton"
+                type="button"
+                title="Create new file"
+            >
+                +
+            </button>
+
+        </div>
+        <div class="assetsSection">
+
+    <div class="sidebarTitle">
+        🖼️ Assets
+    </div>
+
+    <div id="assetList"></div>
+
+    <button id="addAssetButton">
+        ＋ Add Asset
+    </button>
+
+</div>
+
+
+        <div class="folder">
+
+            <div class="folderTitle">
+                📂 JUNGLESCRIPT
+            </div>
+
+            <div id="fileList">
+
+                <div
+                    class="file active"
+                    data-file="main.jls"
+                >
+                    <span class="fileIcon">🌴</span>
+                    <span>main.jls</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebarBottom">
+
+            <div class="engineStatus">
+                <span class="statusDot"></span>
+                JungleScript Engine
+            </div>
+
+            <div class="engineVersion">
+                Engine v0.2
+            </div>
+
+        </div>
+
+    </aside>
+    
+
+
+    <!-- ======================================
+         💻 WORKSPACE
+         ====================================== -->
+
+    <section class="workspace">
+
+        <!-- ==================================
+             EDITOR HEADER
+             ================================== -->
+
+        <div class="editorHeader">
+
+            <div class="tab activeTab">
+
+                <span class="tabIcon">🌴</span>
+
+                <span id="currentFileName">
+                    main.jls
+                </span>
+
+                <span class="tabClose">
+                    ×
+                </span>
+
+            </div>
+
+            <div class="editorHeaderSpace"></div>
+
+            <div class="languageBadge">
+                JLS
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+             EDITOR + PREVIEW
+             ================================== -->
+
+        <div class="editors">
+
+
+            <!-- ==============================
+                 📝 CODE EDITOR
+                 ============================== -->
+
+            <div class="editor">
+
+                <div
+                    id="lineNumbers"
+                    aria-hidden="true"
+                >
+                    
+                </div>
+
+                <textarea
+                    id="code"
+                    spellcheck="false"
+                    wrap="off"
+                    aria-label="JungleScript code editor"
+                >file_name("MyWebsite.jls")
+
+
+use("JungleWeb")
+
+page("My First Jungle Website")
+
+heading("Hello World!")
+
+text("This website was created with JungleScript!")
+
+button("Click Me")</textarea>
+
+
+            </div>
+
+
+            <!-- ==============================
+                 🌐 PREVIEW
+                 ============================== -->
+
+            <div class="preview">
+
+                <div class="panelHeader">
+
+                    <div class="panelTitle">
+                        <span>🌐</span>
+                        PREVIEW
+                    </div>
+
+                    <div class="panelStatus">
+                        Live
+                    </div>
+
+                </div>
+
+                <div id="previewOutput"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+             🧠 CONSOLE
+             ================================== -->
+
+        <div class="console">
+
+            <div class="consoleHeader">
+
+                <div class="consoleTitle">
+                    <span>▸</span>
+                    JUNGLESCRIPT CONSOLE
+                </div>
+
+                <div class="consoleHint">
+                    Output
+                </div>
+
+            </div>
+
+            <div id="consoleOutput">
+
+                <div class="consoleLine info">
+                    &gt; JungleScript ready!
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ==========================================
+     🌴 JUNGLESCRIPT ENGINE
+     ========================================== -->
+
+
+<script type="module" src="3d/3d.js"></script>
+
+<script src="3d rocket/3drocket.js"></script>
+
+<script src="3d handler/3dhandler.js"></script>
+
+<script src="AI service/AI.js"></script>
+
+<script src="GameBuilder/gamebuilder.js"></script>
+
+<script src="jungleGame/junglegame.js"></script>
+
+<script src="Web/html.js"></script>
+
+<script src="runtime/junglescript.js"></script>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>

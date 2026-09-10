@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>JungleScript</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        background: #07110d;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    /* ==============================
+       NAVBAR
+       ============================== */
+
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+
+        height: 64px;
+
+        display: flex;
+        align-items: center;
+
+        padding: 0 30px;
+
+        background: #0d1d16;
+        border-bottom: 1px solid #294437;
+    }
+
+    .logo {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .navLinks {
+        margin-left: auto;
+
+        display: flex;
+        gap: 24px;
+    }
+
+    .navLinks a {
+        color: #a9c7b7;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .navLinks a:hover {
+        color: white;
+    }
+
+    /* ==============================
+       HERO
+       ============================== */
+
+    .hero {
+        min-height: 600px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+
+        padding: 80px 20px;
+
+        background:
+            radial-gradient(
+                circle at center,
+                #163c29 0%,
+                #07110d 55%
+            );
+    }
+
+    .heroContent {
+        max-width: 800px;
+    }
+
+    .badge {
+        display: inline-block;
+
+        padding: 8px 14px;
+
+        border: 1px solid #315d47;
+        border-radius: 20px;
+
+        background: #10261b;
+
+        color: #8fc4a6;
+
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        margin: 25px 0 15px;
+
+        font-size: clamp(42px, 8vw, 76px);
+
+        line-height: 1;
+    }
+
+    .hero p {
+        max-width: 600px;
+
+        margin: 0 auto;
+
+        color: #a5bdb0;
+
+        font-size: 18px;
+
+        line-height: 1.6;
+    }
+
+    .heroButtons {
+        margin-top: 35px;
+
+        display: flex;
+        justify-content: center;
+
+        gap: 14px;
+
+        flex-wrap: wrap;
+    }
+
+    .primaryButton,
+    .secondaryButton {
+        display: inline-block;
+
+        padding: 12px 20px;
+
+        border-radius: 8px;
+
+        text-decoration: none;
+
+        font-weight: bold;
+
+        cursor: pointer;
+    }
+
+    .primaryButton {
+        background: #1d7049;
+        color: white;
+    }
+
+    .primaryButton:hover {
+        background: #278c5b;
+    }
+
+    .secondaryButton {
+        background: #173427;
+        color: white;
+
+        border: 1px solid #315d47;
+    }
+
+    .secondaryButton:hover {
+        background: #24523d;
+    }
+
+    /* ==============================
+       SECTIONS
+       ============================== */
+
+    .section {
+        max-width: 1100px;
+
+        margin: auto;
+
+        padding: 90px 25px;
+
+        text-align: center;
+    }
+
+    .section h2 {
+        font-size: 36px;
+
+        margin-top: 0;
+    }
+
+    .cards {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 20px;
+
+        margin-top: 40px;
+    }
+
+    .card {
+        padding: 30px;
+
+        background: #0d1d16;
+
+        border: 1px solid #294437;
+        border-radius: 12px;
+    }
+
+    .card:hover {
+        border-color: #3e7658;
+        transform: translateY(-3px);
+    }
+
+    .icon {
+        font-size: 38px;
+
+        margin-bottom: 15px;
+    }
+
+    .card h3 {
+        margin: 10px 0;
+
+        font-size: 21px;
+    }
+
+    .card p {
+        color: #91aa9c;
+
+        line-height: 1.6;
+    }
+
+    /* ==============================
+       ABOUT
+       ============================== */
+
+    .darkSection {
+        max-width: none;
+
+        background: #050b08;
+    }
+
+    .largeText {
+        max-width: 750px;
+
+        margin: auto;
+
+        color: #9eb5a8;
+
+        font-size: 18px;
+
+        line-height: 1.7;
+    }
+
+    .codeExample {
+        max-width: 700px;
+
+        margin: 40px auto 0;
+
+        text-align: left;
+
+        overflow: hidden;
+
+        border: 1px solid #294437;
+        border-radius: 10px;
+
+        background: #08120e;
+    }
+
+    .codeTop {
+        padding: 12px 16px;
+
+        background: #0d1d16;
+
+        color: #8caf9d;
+
+        font-size: 13px;
+    }
+
+    pre {
+        margin: 0;
+
+        padding: 20px;
+
+        overflow-x: auto;
+
+        color: #dffff0;
+
+        font-family: Consolas, monospace;
+
+        line-height: 1.6;
+    }
+
+    /* ==============================
+       DOWNLOAD
+       ============================== */
+
+    .downloadCards {
+        max-width: 800px;
+
+        margin: 40px auto 0;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 20px;
+    }
+
+    .downloadCard {
+        padding: 30px;
+
+        background: #0d1d16;
+
+        border: 1px solid #294437;
+
+        border-radius: 12px;
+    }
+
+    .downloadCard p {
+        color: #91aa9c;
+
+        line-height: 1.6;
+
+        margin-bottom: 25px;
+    }
+
+    /* ==============================
+       FOOTER
+       ============================== */
+
+    footer {
+        padding: 30px;
+
+        text-align: center;
+
+        background: #050b08;
+
+        border-top: 1px solid #294437;
+
+        color: #8caf9d;
+    }
+
+    footer span {
+        margin-left: 15px;
+
+        color: #526d5e;
+    }
+
+    /* ==============================
+       MOBILE
+       ============================== */
+
+    @media (max-width: 700px) {
+
+        .navbar {
+            padding: 0 15px;
+        }
+
+        .navLinks {
+            display: none;
+        }
+
+        .cards {
+            grid-template-columns: 1fr;
+        }
+
+        .downloadCards {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<!-- ==============================
+     🌴 NAVIGATION
+     ============================== -->
+
+<nav class="navbar">
+
+
+<div class="logo">
+    🌴 JungleScript
+</div>
+
+<div class="navLinks">
+
+    <a href="#features">
+        Features
+    </a>
+
+    <a href="#about">
+        About
+    </a>
+
+    <a href="#download">
+        Download
+    </a>
+
+</div>
+
+
+</nav>
+
+<!-- ==============================
+     🚀 HERO
+     ============================== -->
+
+<section class="hero">
+
+
+<div class="heroContent">
+
+    <div class="badge">
+        🌴 JungleScript v0.2
+    </div>
+
+    <h1>
+        Code without limits.
+    </h1>
+
+    <p>
+        A simple programming language for
+        websites, games, and automation.
+    </p>
+
+    <div class="heroButtons">
+
+        <a
+            href="./editor.html"
+            class="primaryButton"
+        >
+            🌐 Open Online Editor
+        </a>
+
+        <a
+            href="#download"
+            class="secondaryButton"
+        >
+            💻 Get JungleScript
+            
+        </a>
+
+    </div>
+
+</div>
+
+
+</section>
+
+<!-- ==============================
+     🌐 FEATURES
+     ============================== -->
+
+<section
+    id="features"
+    class="section"
+>
+
+
+<h2>
+    One language. Multiple worlds.
+</h2>
+
+<div class="cards">
+
+
+    <div class="card">
+
+        <div class="icon">
+            🌐
+        </div>
+
+        <h3>
+            JungleWeb
+        </h3>
+
+        <p>
+            Build websites and web applications
+            using simple JungleScript commands.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="icon">
+            🎮
+        </div>
+
+        <h3>
+            JungleGame
+        </h3>
+
+        <p>
+            Create games using commands designed
+            specifically for game development.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="icon">
+            💻
+        </div>
+
+        <h3>
+            JungleOS
+        </h3>
+
+        <p>
+            Build tools and automation systems
+            around the JungleScript language.
+        </p>
+
+    </div>
+
+
+</div>
+
+
+</section>
+
+<!-- ==============================
+     🧠 ABOUT
+     ============================== -->
+
+<section
+    id="about"
+    class="section darkSection"
+>
+
+
+<h2>
+    What is JungleScript?
+</h2>
+
+<p class="largeText">
+
+    JungleScript is a programming language designed
+    to make different types of programming easier
+    through one simple syntax.
+
+</p>
+
+
+<div class="codeExample">
+
+    <div class="codeTop">
+        🌴 main.jls
+    </div>
+
+
+<pre><code>file_name("MyWebsite.jls")
+
+use("JungleWeb")
+
+page("My Website")
+
+heading("Hello World!")
+
+text("Made with JungleScript!")</code></pre>
+
+
+</div>
+
+
+</section>
+
+<!-- ==============================
+     💾 DOWNLOAD
+     ============================== -->
+
+<section
+    id="download"
+    class="section"
+>
+
+
+<h2>
+    Get JungleScript
+</h2>
+
+<p class="largeText">
+    Choose how you want to use JungleScript.
+</p>
+
+
+<div class="downloadCards">
+
+
+    <div class="downloadCard">
+
+        <h3>
+            🌐 Online Editor
+        </h3>
+
+        <p>
+            Start coding instantly in your browser.
+            No installation required.
+        </p>
+
+        <a
+            href="./editor.html"
+            class="primaryButton"
+        >
+            Open Editor
+        </a>
+
+    </div>
+
+
+    <div class="downloadCard">
+
+        <h3>
+            💻 Windows
+        </h3>
+
+        <p>
+            The JungleScript desktop version
+            will be available in the future.
+        </p>
+
+        <button
+            class="secondaryButton"
+            onclick="alert('The JungleScript Windows version is coming soon!')"
+        >
+            Coming Soon
+        </button>
+
+    </div>
+
+
+</div>
+
+
+</section>
+
+<!-- ==============================
+     🌴 FOOTER
+     ============================== -->
+
+<footer>
+
+
+🌴 JungleScript
+
+<span>
+    Made with JavaScript 
+    ©2026
+</span>
+
+
+</footer>
+
+</body>
+</html>

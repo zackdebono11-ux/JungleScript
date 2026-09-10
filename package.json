@@ -1,0 +1,36 @@
+{
+  "name": "junglescript",
+  "version": "0.2.0",
+  "description": "JungleScript desktop editor",
+  "main": "electron-main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win portable"
+  },
+  "dependencies": {
+    "pug": "^3.0.4",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "electron": "^44.2.0",
+    "electron-builder": "^26.15.3",
+    "vite": "^8.2.2"
+  },
+  "build": {
+    "appId": "com.junglescript.desktop",
+    "productName": "JungleScript",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/**/*",
+      "!release/**/*",
+      "!dist/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "signAndEditExecutable": false
+    }
+  }
+}

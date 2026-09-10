@@ -1,0 +1,15 @@
+directories:
+  output: release
+  buildResources: build
+appId: com.junglescript.desktop
+productName: JungleScript
+files:
+  - filter:
+      - '**/*'
+      - '!node_modules/**/*'
+      - '!release/**/*'
+      - '!dist/**/*'
+win:
+  target: portable
+  signAndEditExecutable: false
+electronVersion: 44.2.0
