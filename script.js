@@ -490,7 +490,6 @@ function runJungleScript() {
     consoleMessage("✅ Program finished.", "success");
 }
 
-runButton.addEventListener("click", runJungleScript);
 
 // ==========================================
 // 💾 DOWNLOAD FUNCTION
