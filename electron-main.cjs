@@ -52,6 +52,48 @@ ipcMain.handle("run-clojure", async (event, code) => {
     });
 });
 
+
+ipcMain.handle("launch-upgrade", async (event, filePath) => {
+
+    if (typeof filePath !== "string" || !filePath.trim()) {
+        return {
+            success: false,
+            error: "Invalid upgrade path."
+        };
+    }
+
+    if (!filePath.toLowerCase().endsWith(".exe")) {
+        return {
+            success: false,
+            error: "Only .exe upgrades can be launched."
+        };
+    }
+
+    try {
+
+        const child = spawn(filePath, [], {
+            detached: true,
+            stdio: "ignore",
+            windowsHide: false,
+            shell: false
+        });
+
+        child.unref();
+
+        return {
+            success: true
+        };
+
+    } catch (error) {
+
+        return {
+            success: false,
+            error: error.message
+        };
+
+    }
+});
+
 app.whenReady().then(() => {
     createWindow();
 

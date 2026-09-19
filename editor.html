@@ -44,12 +44,62 @@
         💾 Download
     </button>
 
+   <div class="runControls">
+
     <button id="runButton" class="runButton">
         ▶ Run
     </button>
+
+    <button
+        id="runMenuButton"
+        class="runMenuButton"
+        type="button"
+    >
+        ▾
+    </button>
+
+    <div id="runMenuOptions" class="runMenuOptions">
+
+    <button id="runCurrentFileButton">
+        ▶ Run Current File
+    </button>
+
+    <button id="runAllFilesButton">
+        ▶ Run All Files
+    </button>
+
+    <div class="runMenuDivider"></div>
+
+    <button id="stopCurrentFileButton">
+        ⏹ Stop Current File
+    </button>
+
+    <button id="stopAllButton">
+        ⏹ Stop All
+    </button>
+
+</div>
+</div>
+
+</div>
     <button id="loadCodeButton">📂 Load Code</button>
+    <div class="themeMenu">
+    <button id="themeButton" class="toolbarButton" type="button">
+        🎨 Theme
+    </button>
+
+<div class="themeButtons">
+    <button type="button" data-theme="jungle">🌴 Jungle</button>
+    <button type="button" data-theme="jurassic">🦖 Jurassic</button>
+    <button type="button" data-theme="manga">🌀 Manga</button>
+    <button type="button" data-theme="chinese">🇨🇳 </button>
+    <button type="button" data-theme="japanese">🇯🇵 </button>
+    <button type="button" data-theme="future">🤖 Future</button>
+</div>
+</div>
 
 </header>
+
 
 
 <!-- ==========================================
@@ -91,6 +141,7 @@
     <button id="addAssetButton">
         ＋ Add Asset
     </button>
+    <button id="addUpgradeButton">🆙 Add Upgrade</button>
 
 </div>
 
@@ -180,20 +231,12 @@
                  ============================== -->
 
             <div class="editor">
+    <div id="lineNumbers" aria-hidden="true"></div>
 
-                <div
-                    id="lineNumbers"
-                    aria-hidden="true"
-                >
-                    
-                </div>
+    <pre id="highlightedCode" aria-hidden="true"></pre>
 
-                <textarea
-                    id="code"
-                    spellcheck="false"
-                    wrap="off"
-                    aria-label="JungleScript code editor"
-                >file_name("MyWebsite.jls")
+    <textarea id="code" spellcheck="false" wrap="off" aria-label="JungleScript code editor">
+file_name("MyWebsite.jls")
 
 
 use("JungleWeb")
@@ -263,7 +306,58 @@ button("Click Me")</textarea>
 
             </div>
 
+
         </div>
+        <!-- ==================================
+     🌋 ONLINE TERMINAL
+     ================================== -->
+
+<div class="terminal-panel">
+
+    <div class="terminal-toolbar">
+
+        <span>Terminal</span>
+
+        <select id="terminalType">
+            <option value="jungle">🌋 Jungle</option>
+            <option value="normal">🖥️ Normal</option>
+        </select>
+
+        <button
+            id="clearTerminalButton"
+            type="button"
+        >
+            Clear
+        </button>
+
+    </div>
+       <button id="minimizeTerminalButton" title="Minimize terminal">
+        ─
+    </button>
+
+    <div id="onlineTerminal">
+
+        <div id="terminalOutput"></div>
+
+        <div class="terminal-input-row">
+
+            <span id="terminalPrompt">
+                JLS&gt;
+            </span>
+
+            <input
+                id="terminalInput"
+                type="text"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Terminal command"
+            >
+
+        </div>
+
+    </div>
+
+</div>
 
     </section>
 

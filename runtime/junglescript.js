@@ -18,6 +18,8 @@ class JungleScriptRuntime {
         this.variables = {};
         this.functions = {};
         this.pathHandlers = {};
+        this.stopRequested = false;
+this.currentFileRunning = false;
 
         this.gameRuntime = null;
         this.game3D = null;
@@ -36,40 +38,159 @@ class JungleScriptRuntime {
     // ▶ RUN PROGRAM
     // ==========================================
 
-    run(code) {
+   async run(code) {
 
-        if (typeof code !== "string") {
+    if (typeof code !== "string") {
 
-            this.error(
-                0,
-                "Program must be text."
-            );
+        this.error(
+            0,
+            "Program must be text."
+        );
 
-            return;
+        return;
 
-        }
+    }
 
-        const lines =
-            code.split("\n");
+    // ==========================================
+    // ▶ START PROGRAM
+    // ==========================================
 
-        this.executeBlock(
+    this.stopRequested = false;
+    this.currentFileRunning = true;
+
+    const lines =
+        code.split("\n");
+
+    try {
+
+        await this.executeBlock(
             lines,
             0,
             lines.length
         );
 
+    } finally {
+
+        this.currentFileRunning = false;
+
     }
+
+}
+// ==========================================
+// ⏹ STOP CURRENT FILE
+// ==========================================
+
+stopCurrentFile() {
+
+    if (!this.currentFileRunning) {
+
+        console.log(
+            "⏹️ No JungleScript file is currently running."
+        );
+
+        return;
+
+    }
+
+    this.stopRequested = true;
+
+    console.log(
+        "⏹️ Current JungleScript file stopped."
+    );
+
+    // Stop currently playing audio
+    if (this.currentAudio) {
+
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+        this.currentAudio = null;
+
+    }
+
+}
+
+
+// ==========================================
+// ⏹ STOP ALL
+// ==========================================
+
+stopAll() {
+
+    this.stopRequested = true;
+
+    this.currentFileRunning = false;
+
+    // Stop currently playing audio
+    if (this.currentAudio) {
+
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+        this.currentAudio = null;
+
+    }
+
+    // Stop game runtime if available
+    if (this.gameRuntime) {
+
+        if (
+            typeof this.gameRuntime.stop === "function"
+        ) {
+
+            this.gameRuntime.stop();
+
+        }
+
+        this.gameRuntime = null;
+
+    }
+
+    // Stop 3D runtime if available
+    if (this.game3D) {
+
+        if (
+            typeof this.game3D.stop === "function"
+        ) {
+
+            this.game3D.stop();
+
+        }
+
+        this.game3D = null;
+
+    }
+
+    console.log(
+        "⏹️ All JungleScript execution stopped."
+    );
+
+}
 
 
     // ==========================================
     // 🧠 EXECUTE BLOCK
     // ==========================================
 
-   executeBlock(lines, start, end) {
+   async executeBlock(lines, start, end) {
+            // ==========================================
+        // ⏹ STOP REQUEST
+        // ==========================================
+
+        if (this.stopRequested) {
+            return;
+        }
 
     let i = start;
 
     while (i < end) {
+         if (this.stopRequested) {
+        return;
+    }
+     // Give the browser time to process buttons/events
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    if (this.stopRequested) {
+        return;
+    }
 
       
         let line =
@@ -115,7 +236,7 @@ class JungleScriptRuntime {
 if (line.startsWith("if ")) {
 
     const result =
-        this.findIfBlock(
+        await this.findIfBlock(
             lines,
             i
         );
@@ -145,7 +266,7 @@ if (line.startsWith("if ")) {
         )
     ) {
 
-        this.executeBlock(
+       await this.executeBlock(
             lines,
             i + 1,
             result.elseIfs.length > 0
@@ -185,7 +306,7 @@ if (line.startsWith("if ")) {
                             ? result.elseIndex
                             : result.end;
 
-                this.executeBlock(
+                await this.executeBlock(
                     lines,
                     current.index + 1,
                     next
@@ -206,7 +327,7 @@ if (line.startsWith("if ")) {
         result.elseIndex !== -1
     ) {
 
-        this.executeBlock(
+        await this.executeBlock(
             lines,
             result.elseIndex + 1,
             result.end
@@ -279,12 +400,16 @@ if (line.startsWith("repeat ")) {
         let repeatIndex = 0;
         repeatIndex < repetitions;
         repeatIndex++
+        
     ) {
+                if (this.stopRequested) {
+            return;
+        }
 
         this.variables.repeatIndex =
             repeatIndex + 1;
 
-        this.executeBlock(
+        await this.executeBlock(
             lines,
             i + 1,
             result.end
@@ -337,6 +462,9 @@ if (line.startsWith("while ")) {
     while (
         this.evaluateCondition(condition)
     ) {
+           if (this.stopRequested) {
+        return;
+    }
 
         if (iterations >= MAX_ITERATIONS) {
 
@@ -354,11 +482,14 @@ if (line.startsWith("while ")) {
 
         this.breakRequested = false;
 
-        this.executeBlock(
+       await this.executeBlock(
             lines,
             i + 1,
             result.end
         );
+        await new Promise(
+    resolve => setTimeout(resolve, 0)
+);
 
         if (this.breakRequested) {
 
@@ -540,7 +671,7 @@ if (line.startsWith("onPath(")) {
             // NORMAL COMMAND
             // ------------------------------------------
 
-            this.executeLine(
+           await this.executeLine(
                 line,
                 lineNumber
             );
@@ -1071,7 +1202,7 @@ findIfBlock(lines, start) {
     // 🧩 EXECUTE LINE
     // ==========================================
 
-    executeLine(line, lineNumber) {
+    async executeLine(line, lineNumber) {
 
         // ==========================================
         // 📦 VARIABLES
@@ -1322,6 +1453,261 @@ findIfBlock(lines, start) {
             return;
 
         }
+        // ==========================================
+// 🆙 upgrade()
+// ==========================================
+//
+// Registers/uses a JungleScript upgrade.
+//
+// Example:
+//
+// upgrade("JungleScript-Test-Installer.exe")
+//
+// The Online IDE NEVER executes the EXE.
+// It only verifies that the upgrade exists.
+//
+
+const upgradeMatch =
+    line.match(
+        /^upgrade\(["'](.+)["']\)$/
+    );
+
+if (upgradeMatch) {
+
+    const upgradeName =
+        upgradeMatch[1];
+
+    const upgradeStore =
+        window.jungleScriptUpgrades;
+
+    if (!upgradeStore) {
+
+        this.error(
+            lineNumber,
+            "JungleScript upgrade system is not available."
+        );
+
+        return;
+
+    }
+
+    const upgrade =
+        upgradeStore[upgradeName];
+
+    if (!upgrade) {
+
+        this.error(
+            lineNumber,
+            `Upgrade "${upgradeName}" was not found. Add it with 🆙 Add Upgrade first.`
+        );
+
+        return;
+
+    }
+
+    const lowerName =
+        upgrade.name.toLowerCase();
+
+    const isExe =
+        lowerName.endsWith(".exe");
+
+    const isJDKSU =
+        lowerName.endsWith(".jdksu");
+
+    console.log(
+        "🆙 JungleScript Upgrade"
+    );
+
+    console.log(
+        `📦 ${upgrade.name}`
+    );
+
+    console.log(
+        `📏 Size: ${upgrade.size.toLocaleString()} bytes`
+    );
+
+    console.log(
+        `📄 Type: ${upgrade.type || "unknown"}`
+    );
+
+    if (isExe) {
+
+        console.log(
+            "🖥️ Windows executable detected."
+        );
+
+    }
+    else if (isJDKSU) {
+
+        console.log(
+            "🆙 JungleScript JDKSU upgrade detected."
+        );
+
+    }
+
+    console.log(
+        "✅ Upgrade found."
+    );
+
+    console.log(
+        "🔒 Online IDE execution is disabled."
+    );
+
+    return;
+}
+// ==========================================
+// 🚀 launchUpgrade()
+// ==========================================
+//
+// Example:
+//
+// launchUpgrade("JungleScript-Test-Installer.exe")
+//
+// Launches a registered upgrade in the
+// JungleScript desktop runtime.
+//
+// The Online IDE cannot launch EXE files.
+// ==========================================
+
+const launchUpgradeMatch =
+    line.match(
+        /^launchUpgrade\(["'](.+)["']\)$/
+    );
+
+if (launchUpgradeMatch) {
+
+    const upgradeName =
+        launchUpgradeMatch[1];
+
+    const upgradeStore =
+        window.jungleScriptUpgrades;
+
+    // ==========================================
+    // 🆙 CHECK UPGRADE SYSTEM
+    // ==========================================
+
+    if (!upgradeStore) {
+
+        this.error(
+            lineNumber,
+            "JungleScript upgrade system is not available."
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // 🔎 FIND UPGRADE
+    // ==========================================
+
+    const upgrade =
+        upgradeStore[upgradeName];
+
+    if (!upgrade) {
+
+        this.error(
+            lineNumber,
+            `Upgrade "${upgradeName}" was not found. Add it with 🆙 Add Upgrade first.`
+        );
+
+        return;
+    }
+
+    console.log(
+        `🚀 Launch requested: ${upgrade.name}`
+    );
+
+    // ==========================================
+    // 🌐 ONLINE IDE / BROWSER
+    // ==========================================
+
+    if (
+        !window.jungleElectron ||
+        typeof window.jungleElectron.launchUpgrade !==
+            "function"
+    ) {
+
+        console.log(
+            "🌐 Online IDE detected."
+        );
+
+        console.log(
+            "🔒 Browser security prevents launching EXE files directly."
+        );
+
+        console.log(
+            "💻 Use the JungleScript desktop runtime."
+        );
+
+        return;
+    }
+
+    // ==========================================
+    // 📍 GET REAL FILE PATH
+    // ==========================================
+
+    const filePath =
+        upgrade.junglePath;
+
+    if (!filePath) {
+
+        this.error(
+            lineNumber,
+            `No local file path was stored for "${upgrade.name}". Please remove the upgrade and add it again.`
+        );
+
+        return;
+    }
+
+    console.log(
+        `📍 Launch path: ${filePath}`
+    );
+
+    // ==========================================
+    // 🚀 SEND TO ELECTRON
+    // ==========================================
+
+    try {
+
+        const result =
+            await window
+                .jungleElectron
+                .launchUpgrade(
+                    filePath
+                );
+
+        if (
+            result &&
+            result.success
+        ) {
+
+            console.log(
+                `✅ Launched: ${upgrade.name}`
+            );
+
+        }
+        else {
+
+            this.error(
+                lineNumber,
+                result?.error ||
+                `Could not launch "${upgrade.name}".`
+            );
+
+        }
+
+    }
+    catch (error) {
+
+        this.error(
+            lineNumber,
+            `Could not launch "${upgrade.name}": ${error.message}`
+        );
+
+    }
+
+    return;
+}
 
 
         // ==========================================
