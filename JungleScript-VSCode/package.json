@@ -1,0 +1,34 @@
+{
+  "name": "junglescript-language-support",
+  "displayName": "JungleScript Language Support",
+  "description": "Syntax highlighting for the JungleScript programming language.",
+  "version": "0.1.0",
+  "publisher": "junglescript",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "junglescript",
+        "aliases": [
+          "JungleScript",
+          "junglescript"
+        ],
+        "extensions": [
+          ".jls"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "junglescript",
+        "scopeName": "source.junglescript",
+        "path": "./syntaxes/junglescript.tmLanguage.json"
+      }
+    ]
+  }
+}

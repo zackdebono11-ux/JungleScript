@@ -1,0 +1,147 @@
+{
+  "name": "JungleScript",
+  "scopeName": "source.junglescript",
+  "fileTypes": [
+    "jls"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#modules"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#booleans"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.junglescript",
+          "match": "//.*$"
+        }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.junglescript",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.junglescript",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.junglescript",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.junglescript",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.junglescript",
+          "match": "\\b\\d+(?:\\.\\d+)?\\b"
+        }
+      ]
+    },
+
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.junglescript",
+          "match": "\\b(?:use|page|heading|text|button|download|createFile|uploadcomputerdata)\\b"
+        }
+      ]
+    },
+
+    "modules": {
+      "patterns": [
+        {
+          "name": "entity.name.type.module.junglescript",
+          "match": "\\b(?:JungleWeb|JungleGame|JungleOS)\\b"
+        }
+      ]
+    },
+
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.junglescript",
+          "match": "\\b(?:file_name|use|page|heading|text|button|download|createFile|uploadcomputerdata)(?=\\s*\\()"
+        },
+        {
+          "name": "entity.name.function.junglescript",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\()"
+        }
+      ]
+    },
+
+    "booleans": {
+      "patterns": [
+        {
+          "name": "constant.language.junglescript",
+          "match": "\\b(?:true|false|null)\\b"
+        }
+      ]
+    },
+
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.junglescript",
+          "match": "===|!==|==|!=|<=|>=|=>|&&|\\|\\||[=+\\-*/%<>!]"
+        }
+      ]
+    },
+
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.definition.parameters.junglescript",
+          "match": "[()]"
+         
+          
+        },
+        {
+          "name": "punctuation.separator.junglescript",
+          "match": ","
+          
+        }
+      ]
+    }
+  }
+}
