@@ -9,8 +9,8 @@ from pathlib import Path
 APP_NAME = "JungleScript"
 
 INSTALL_DIR = Path(os.environ["LOCALAPPDATA"]) / APP_NAME
-EXE_NAME = "junglescript.exe"
-EXE_PATH = INSTALL_DIR / EXE_NAME
+ZIP_NAME = "junglescript.zip"
+ZIP_PATH = INSTALL_DIR / ZIP_NAME
 
 
 def add_to_path():
