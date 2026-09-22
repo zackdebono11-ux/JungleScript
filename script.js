@@ -2140,9 +2140,9 @@ function runJungleTerminalCommand(command) {
             terminalPrint("Created by zackdebono11-ux on github");
             break;
 
-        case "youtube":
+        case "my youtube":
             terminalPrint("📺 YouTube");
-            terminalPrint("https://www.youtube.com/@Zack_Debono_MUSICFRVR_11");
+            terminalPrint("https://www.youtube.com/@JUNGLESCRIPT");
             break;
 
         case "modules":

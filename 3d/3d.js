@@ -895,6 +895,9 @@ shoot() {
     if (!this.player || !this.camera) {
         return;
     }
+     if (!codeTextarea || !/aiCreateGame\(Shooter\s*\(/.test(codeTextarea.value)) {
+        return;
+    }
 
     const now = performance.now();
 

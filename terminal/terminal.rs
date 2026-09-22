@@ -42,7 +42,7 @@ fn main() {
                 println!("Of course, the owner of this project is @zackdebono11-ux. You can reach out to him for any queries or contributions. 🌴");
             }
             "my youtube" => {
-                println!("Check out my YouTube channel: https://www.youtube.com/@Zack_Debono_MUSICFRVR_11 ▶");
+                println!("Check out my YouTube channel: https://www.youtube.com/@JUNGLESCRIPT ▶");
             }
 
             "" => {}
