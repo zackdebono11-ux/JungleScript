@@ -1,4 +1,3 @@
-
 import os
 import sys
 import shutil
@@ -11,6 +10,9 @@ APP_NAME = "JungleScript"
 INSTALL_DIR = Path(os.environ["LOCALAPPDATA"]) / APP_NAME
 ZIP_NAME = "junglescript.zip"
 ZIP_PATH = INSTALL_DIR / ZIP_NAME
+
+EXE_NAME = "junglescript.exe"
+EXE_PATH = INSTALL_DIR / EXE_NAME
 
 
 def add_to_path():
@@ -216,4 +218,3 @@ def install():
 
 if __name__ == "__main__":
     install()
-
