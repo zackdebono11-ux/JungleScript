@@ -29,8 +29,9 @@
       "!dist/**/*"
     ],
     "win": {
-      "target": "portable",
-      "signAndEditExecutable": false
-    }
+  "target": "portable",
+  "artifactName": "junglescript.exe",
+  "signAndEditExecutable": false
+}
   }
 }
