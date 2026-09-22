@@ -3,6 +3,7 @@ import sys
 import shutil
 import subprocess
 import winreg
+import zipfile
 from pathlib import Path
 
 APP_NAME = "JungleScript"
@@ -164,10 +165,10 @@ def install():
     print("===================================")
     print()
 
-    source_exe = Path(__file__).parent / EXE_NAME
+    source_zip = Path(__file__).parent / ZIP_NAME
 
-    if not source_exe.exists():
-        print("ERROR: junglescript.exe was not found.")
+    if not source_zip.exists():
+        print(f"ERROR: {ZIP_NAME} was not found.")
         print()
         input("Press Enter to exit...")
         return
@@ -178,9 +179,18 @@ def install():
     # Create installation directory
     INSTALL_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Copy engine
-    print("[1/4] Installing JungleScript engine...")
-    shutil.copy2(source_exe, EXE_PATH)
+    # Extract engine
+    print("[1/4] Extracting JungleScript engine...")
+    with zipfile.ZipFile(source_zip, "r") as zf:
+        zf.extractall(INSTALL_DIR)
+
+    if not EXE_PATH.exists():
+        print(f"ERROR: {EXE_NAME} was not found inside {ZIP_NAME}")
+        print(f"       after extraction. Contents landed in:")
+        print(f"       {INSTALL_DIR}")
+        print()
+        input("Press Enter to exit...")
+        return
 
     # PATH
     print("[2/4] Adding JungleScript to PATH...")
