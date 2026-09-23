@@ -1,7 +1,7 @@
-
-const { app, BrowserWindow, ipcMain } = require("electron");
+﻿const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 const { spawn } = require("node:child_process");
+
 function createWindow() {
     const window = new BrowserWindow({
         width: 1280,
@@ -16,8 +16,13 @@ function createWindow() {
         }
     });
 
-window.loadURL("http://localhost:5173/");
+    if (app.isPackaged) {
+        window.loadFile(path.join(__dirname, "dist", "index.html"));
+    } else {
+        window.loadURL("http://localhost:5173/");
+    }
 }
+
 ipcMain.handle("run-clojure", async (event, code) => {
     return new Promise((resolve) => {
         const clojure = spawn("clj", ["-M", "-e", code], {
