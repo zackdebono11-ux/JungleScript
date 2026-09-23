@@ -3,14 +3,22 @@ import sys
 import shutil
 import subprocess
 import winreg
-import zipfile
 from pathlib import Path
 
 APP_NAME = "JungleScript"
 
+def get_base_dir():
+    """Directory the installer itself lives in, whether run as a plain
+    .py script or as a PyInstaller --onefile frozen exe (where __file__
+    would otherwise point into a temporary extraction folder)."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).parent
+    return Path(__file__).parent
+
+
+BASE_DIR = get_base_dir()
+
 INSTALL_DIR = Path(os.environ["LOCALAPPDATA"]) / APP_NAME
-ZIP_NAME = "junglescript.zip"
-ZIP_PATH = INSTALL_DIR / ZIP_NAME
 
 EXE_NAME = "junglescript.exe"
 EXE_PATH = INSTALL_DIR / EXE_NAME
@@ -165,10 +173,12 @@ def install():
     print("===================================")
     print()
 
-    source_zip = Path(__file__).parent / ZIP_NAME
+    source_exe = BASE_DIR / EXE_NAME
 
-    if not source_zip.exists():
-        print(f"ERROR: {ZIP_NAME} was not found.")
+    if not source_exe.exists():
+        print(f"ERROR: {EXE_NAME} was not found.")
+        print(f"       Expected it next to installer.py at:")
+        print(f"       {source_exe}")
         print()
         input("Press Enter to exit...")
         return
@@ -179,18 +189,9 @@ def install():
     # Create installation directory
     INSTALL_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Extract engine
-    print("[1/4] Extracting JungleScript engine...")
-    with zipfile.ZipFile(source_zip, "r") as zf:
-        zf.extractall(INSTALL_DIR)
-
-    if not EXE_PATH.exists():
-        print(f"ERROR: {EXE_NAME} was not found inside {ZIP_NAME}")
-        print(f"       after extraction. Contents landed in:")
-        print(f"       {INSTALL_DIR}")
-        print()
-        input("Press Enter to exit...")
-        return
+    # Copy engine
+    print("[1/4] Installing JungleScript engine...")
+    shutil.copy2(source_exe, EXE_PATH)
 
     # PATH
     print("[2/4] Adding JungleScript to PATH...")
@@ -227,4 +228,15 @@ def install():
 
 
 if __name__ == "__main__":
-    install()
+    try:
+        install()
+    except Exception:
+        import traceback
+        print()
+        print("===================================")
+        print("       Installation FAILED")
+        print("===================================")
+        print()
+        traceback.print_exc()
+        print()
+        input("Press Enter to exit...")
