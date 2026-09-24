@@ -59,7 +59,6 @@ def add_to_path():
                 new_path
             )
 
-    # Tell Windows that environment variables changed.
     subprocess.run(
         [
             "powershell",
@@ -78,59 +77,31 @@ def register_jls_files():
 
     file_class = "JungleScript.File"
 
-    # .jls -> JungleScript.File
     with winreg.CreateKey(
         winreg.HKEY_CURRENT_USER,
         r"Software\Classes\.jls"
     ) as key:
-        winreg.SetValueEx(
-            key,
-            "",
-            0,
-            winreg.REG_SZ,
-            file_class
-        )
+        winreg.SetValueEx(key, "", 0, winreg.REG_SZ, file_class)
 
-    # JungleScript.File information
     with winreg.CreateKey(
         winreg.HKEY_CURRENT_USER,
         rf"Software\Classes\{file_class}"
     ) as key:
-        winreg.SetValueEx(
-            key,
-            "",
-            0,
-            winreg.REG_SZ,
-            "JungleScript Source File"
-        )
+        winreg.SetValueEx(key, "", 0, winreg.REG_SZ, "JungleScript Source File")
 
-    # Icon
     with winreg.CreateKey(
         winreg.HKEY_CURRENT_USER,
         rf"Software\Classes\{file_class}\DefaultIcon"
     ) as key:
-        winreg.SetValueEx(
-            key,
-            "",
-            0,
-            winreg.REG_SZ,
-            str(EXE_PATH)
-        )
+        winreg.SetValueEx(key, "", 0, winreg.REG_SZ, str(EXE_PATH))
 
-    # Open command
     command = f'"{EXE_PATH}" "%1"'
 
     with winreg.CreateKey(
         winreg.HKEY_CURRENT_USER,
         rf"Software\Classes\{file_class}\shell\open\command"
     ) as key:
-        winreg.SetValueEx(
-            key,
-            "",
-            0,
-            winreg.REG_SZ,
-            command
-        )
+        winreg.SetValueEx(key, "", 0, winreg.REG_SZ, command)
 
 
 def create_start_menu_shortcut():
@@ -156,12 +127,7 @@ $Shortcut.Save()
 '''
 
     subprocess.run(
-        [
-            "powershell",
-            "-NoProfile",
-            "-Command",
-            powershell_script
-        ],
+        ["powershell", "-NoProfile", "-Command", powershell_script],
         check=False
     )
 
@@ -169,7 +135,7 @@ $Shortcut.Save()
 def install():
     print()
     print("===================================")
-    print("       🌴 JungleScript Installer")
+    print("       JungleScript Installer")
     print("===================================")
     print()
 
@@ -186,22 +152,17 @@ def install():
     print("Installing JungleScript...")
     print()
 
-    # Create installation directory
     INSTALL_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Copy engine
     print("[1/4] Installing JungleScript engine...")
     shutil.copy2(source_exe, EXE_PATH)
 
-    # PATH
     print("[2/4] Adding JungleScript to PATH...")
     add_to_path()
 
-    # .jls association
     print("[3/4] Registering .jls files...")
     register_jls_files()
 
-    # Start Menu
     print("[4/4] Creating Start Menu shortcut...")
     create_start_menu_shortcut()
 

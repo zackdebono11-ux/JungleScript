@@ -1,4 +1,4 @@
-﻿const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 const { spawn } = require("node:child_process");
 
@@ -17,7 +17,7 @@ function createWindow() {
     });
 
     if (app.isPackaged) {
-        window.loadFile(path.join(__dirname, "dist", "index.html"));
+        window.loadFile(path.join(__dirname, "index.html"));
     } else {
         window.loadURL("http://localhost:5173/");
     }
@@ -25,6 +25,8 @@ function createWindow() {
 
 ipcMain.handle("run-clojure", async (event, code) => {
     return new Promise((resolve) => {
+        let settled = false;
+
         const clojure = spawn("clj", ["-M", "-e", code], {
             cwd: __dirname,
             shell: false
@@ -32,6 +34,23 @@ ipcMain.handle("run-clojure", async (event, code) => {
 
         let output = "";
         let error = "";
+
+        clojure.on("error", (err) => {
+            if (settled) return;
+            settled = true;
+
+            if (err.code === "ENOENT") {
+                resolve({
+                    success: false,
+                    output: "Clojure ('clj') is not installed or not found on PATH."
+                });
+            } else {
+                resolve({
+                    success: false,
+                    output: `Failed to start Clojure: ${err.message}`
+                });
+            }
+        });
 
         clojure.stdout.on("data", (data) => {
             output += data.toString();
@@ -42,6 +61,9 @@ ipcMain.handle("run-clojure", async (event, code) => {
         });
 
         clojure.on("close", (exitCode) => {
+            if (settled) return;
+            settled = true;
+
             if (exitCode === 0) {
                 resolve({
                     success: true,

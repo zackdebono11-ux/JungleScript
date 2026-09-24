@@ -5,7 +5,7 @@
   "main": "electron-main.cjs",
   "scripts": {
     "start": "electron .",
-    "build:win": "electron-builder --win portable"
+    "build:win": "electron-builder --win nsis"
   },
   "dependencies": {
     "pug": "^3.0.4",
@@ -25,13 +25,17 @@
     "files": [
       "**/*",
       "!node_modules/**/*",
-      "!release/**/*",
-      "!dist/**/*"
+      "!release/**/*"
     ],
     "win": {
-  "target": "portable",
-  "artifactName": "junglescript.exe",
-  "signAndEditExecutable": false
-}
+      "target": "nsis",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
   }
 }

@@ -2,3 +2,7 @@ node_modules/
 release/win-unpacked.tmp/
 
 release/
+
+dist/
+
+3d/native-test/target/
