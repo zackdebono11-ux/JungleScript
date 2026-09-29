@@ -1,0 +1,19 @@
+directories:
+  output: release
+  buildResources: build
+appId: com.junglescript.desktop
+productName: JungleScript
+files:
+  - filter:
+      - '**/*'
+      - '!node_modules/**/*'
+      - '!release/**/*'
+win:
+  target: nsis
+  signAndEditExecutable: false
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+electronVersion: 44.2.0
