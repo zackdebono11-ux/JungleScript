@@ -19,7 +19,9 @@
           "junglescript"
         ],
         "extensions": [
-          ".jls"
+          ".jls",
+          
+          ".jungle"
         ]
       }
     ],

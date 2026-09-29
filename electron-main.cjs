@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+﻿const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 const { spawn } = require("node:child_process");
 
@@ -119,6 +119,85 @@ ipcMain.handle("launch-upgrade", async (event, filePath) => {
         };
 
     }
+});
+// ==========================================
+// 🌴 JUNGLESCRIPT GO SERVER
+// ==========================================
+
+ipcMain.handle("start-server", async (event, serverSize) => {
+
+    // ==========================================
+    // 🔢 VALIDATE SERVER SIZE
+    // ==========================================
+
+    if (
+        typeof serverSize !== "number" ||
+        !Number.isInteger(serverSize) ||
+        serverSize < 1
+    ) {
+
+        return {
+            success: false,
+            error: "Server size must be a positive whole number."
+        };
+
+    }
+
+    // ==========================================
+    // 📍 GO SERVER LOCATION
+    // ==========================================
+
+    const serverDirectory =
+        path.join(__dirname, "Server");
+
+    const serverFile =
+        path.join(
+            serverDirectory,
+            "server.go"
+        );
+
+    // ==========================================
+    // 🚀 START GO SERVER
+    // ==========================================
+
+    try {
+
+        const server =
+            spawn(
+                "go",
+                [
+                    "run",
+                    "server.go",
+                    String(serverSize)
+                ],
+                {
+                    cwd: serverDirectory,
+                    detached: true,
+                    stdio: "ignore",
+                    windowsHide: false,
+                    shell: false
+                }
+            );
+
+        server.unref();
+
+        return {
+            success: true,
+            message:
+                `JungleScript server started with capacity ${serverSize}.`
+        };
+
+    }
+    catch (error) {
+
+        return {
+            success: false,
+            error:
+                `Could not start JungleScript server: ${error.message}`
+        };
+
+    }
+
 });
 
 app.whenReady().then(() => {

@@ -23,6 +23,8 @@ this.currentFileRunning = false;
 
         this.gameRuntime = null;
         this.game3D = null;
+        this.serverSize = 200;
+this.serverRunning = false;
 
         this.outputElement = null;
         this.html = null;
@@ -1276,6 +1278,50 @@ findIfBlock(lines, start) {
             return;
 
         }
+        // ==========================================
+// 🖥️ server-size()
+// ==========================================
+
+const serverSizeMatch =
+    line.match(
+        /^server-size\((.+)\)$/
+    );
+
+if (serverSizeMatch) {
+
+    const sizeExpression =
+        serverSizeMatch[1].trim();
+
+    const size =
+        this.evaluateExpression(
+            sizeExpression
+        );
+
+    if (
+        typeof size !== "number" ||
+        !Number.isFinite(size) ||
+        !Number.isInteger(size) ||
+        size < 1
+    ) {
+
+        this.error(
+            lineNumber,
+            "server-size() must contain a positive whole number."
+        );
+
+        return;
+
+    }
+
+    this.serverSize = size;
+
+    console.log(
+        `🖥️ Server capacity set to ${size} connections.`
+    );
+
+    return;
+
+}
 
 
         // ==========================================
