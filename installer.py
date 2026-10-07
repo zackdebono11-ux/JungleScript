@@ -144,7 +144,7 @@ def create_start_menu_shortcut():
         / "Programs"
     )
 
-    shortcut = start_menu / "JungleScript.lnk"
+    shortcut = start_menu / "JungleScript1.lnk"
 
     powershell_script = f'''
 $WshShell = New-Object -ComObject WScript.Shell
@@ -176,7 +176,7 @@ def install():
     source_exe = BASE_DIR / EXE_NAME
 
     if not source_exe.exists():
-        print(f"ERROR: {EXE_NAME} was not found.")
+        print(f"ERROR: {EXE_NAME} was not found or was already installed.")
         print(f"       Expected it next to installer.py at:")
         print(f"       {source_exe}")
         print()
