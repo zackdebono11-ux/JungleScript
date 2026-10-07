@@ -8,7 +8,10 @@
     "build:win": "electron-builder --win nsis"
   },
   "dependencies": {
+    "approve": "^0.0.12",
+    "gem": "^2.4.3",
     "pug": "^3.0.4",
+    "scripts": "^0.1.0",
     "three": "^0.185.1"
   },
   "devDependencies": {
@@ -37,5 +40,8 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true
     }
+  },
+  "allowScripts": {
+    "electron-winstaller@5.4.0": true
   }
 }

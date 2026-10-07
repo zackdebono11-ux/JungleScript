@@ -210,11 +210,15 @@
 
             </div>
 
-            <div class="editorHeaderSpace"></div>
+           <div class="editorHeaderSpace"></div>
 
-            <div class="languageBadge">
-                JLS
-            </div>
+<button id="aiTabButton" class="aiTabButton" type="button">
+    🌴 AI
+</button>
+
+<div class="languageBadge">
+    JLS
+</div>
 
         </div>
 
@@ -224,6 +228,55 @@
              ================================== -->
 
         <div class="editors">
+            <!-- ==================================
+     🌴 JUNGLE HELPER AI
+     ================================== -->
+
+<div id="aiPanel" class="aiPanel">
+
+    <div class="aiHeader">
+        <div class="aiTitle">
+            🌴 Jungle Helper
+        </div>
+
+        <div id="aiStatus" class="aiStatus">
+            Offline
+        </div>
+    </div>
+
+    <div id="aiMessages" class="aiMessages">
+
+        <div class="aiMessage aiMessageSystem">
+            <div class="aiMessageName">
+                🌴 Jungle Helper
+            </div>
+
+            <div class="aiMessageText">
+                Hi! Ask me anything about JungleScript.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="aiInputArea">
+
+        <textarea
+            id="aiInput"
+            placeholder="Ask Jungle Helper about JungleScript..."
+            spellcheck="false"
+            rows="2"
+        ></textarea>
+
+        <button
+            id="aiSendButton"
+            type="button"
+        >
+            Send
+        </button>
+
+    </div>
+
+</div>
 
 
             <!-- ==============================
@@ -384,6 +437,8 @@ button("Click Me")</textarea>
 <script src="3d rocket/3drocket.js"></script>
 
 <script src="3d handler/3dhandler.js"></script>
+
+<script src="AI service/JungleHelper.js"></script>
 
 <script src="AI service/AI.js"></script>
 

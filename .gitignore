@@ -1,8 +1,14 @@
 node_modules/
-release/win-unpacked.tmp/
-
 release/
-
 dist/
-
 3d/native-test/target/
+
+*.log
+.env
+.env.*
+desktop.ini
+
+JungleScript Setup *.exe
+
+# Salesforce temporary preview data
+**/temp/**

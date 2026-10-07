@@ -50,7 +50,7 @@ func main() {
 		serverSize = size
 	}
 
-	listener, err := net.Listen("tcp", ":25565")
+	listener, err := net.Listen("tcp", "127.0.0.1:25565")
 	if err != nil {
 		fmt.Println("Failed to start server:", err)
 		return

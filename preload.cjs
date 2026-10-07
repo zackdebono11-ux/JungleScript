@@ -1,31 +1,51 @@
+// ==========================================
+// 🌴 JUNGLESCRIPT ELECTRON PRELOAD
+// ==========================================
+
 const {
     contextBridge,
-    ipcRenderer,
-    webUtils
+    ipcRenderer
 } = require("electron");
 
+// ==========================================
+// 🌴 JUNGLE HELPER
+// ==========================================
+
 contextBridge.exposeInMainWorld(
-    "jungleElectron",
+    "jungleAI",
     {
 
-        runClojure: (code) =>
+        start: () =>
             ipcRenderer.invoke(
-                "run-clojure",
-                code
+                "jungle-ai-start"
             ),
 
-        getFilePath: (file) =>
-            webUtils.getPathForFile(file),
-
-        launchUpgrade: (filePath) =>
+        send: (message) =>
             ipcRenderer.invoke(
-                "launch-upgrade",
-                filePath
-            )
+                "jungle-ai-send",
+                message
+            ),
 
+        onOutput: (callback) => {
+
+            ipcRenderer.on(
+                "jungle-ai-output",
+                (event, text) => {
+
+                    callback(text);
+                }
+            );
+        },
+
+        onStatus: (callback) => {
+
+            ipcRenderer.on(
+                "jungle-ai-status",
+                (event, status) => {
+
+                    callback(status);
+                }
+            );
+        }
     }
-);
-
-console.log(
-    "🌴 JungleScript Electron bridge loaded!"
 );

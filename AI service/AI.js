@@ -1,140 +1,355 @@
 // ==========================================
-// 🤖 JUNGLESCRIPT AI SERVICE
+// 🌴 JUNGLE HELPER AI TAB
 // ==========================================
 
-class JungleAI {
+const aiTabButton = document.getElementById("aiTabButton");
+const aiPanel = document.getElementById("aiPanel");
+const aiInput = document.getElementById("aiInput");
+const aiSendButton = document.getElementById("aiSendButton");
+const aiMessages = document.getElementById("aiMessages");
+const aiStatus = document.getElementById("aiStatus");
 
-    constructor() {
-        console.log("🤖 Jungle AI Service loaded!");
-    }
+let aiRunning = false;
+let aiSending = false;
 
-    generateGame(prompt) {
+// ==========================================
+// OPEN / CLOSE AI
+// ==========================================
 
-        console.log("🧠 AI analyzing:", prompt);
+if (aiTabButton) {
+    aiTabButton.addEventListener("click", async () => {
 
-        const text = prompt.toLowerCase();
+        aiPanel.classList.toggle("aiOpen");
 
-        // Default blueprint
-        const game = {
-            title: "Jungle Game",
-            mode: "2D",
-            type: "adventure",
+        if (aiPanel.classList.contains("aiOpen")) {
 
-            player: {
-                enabled: true
-            },
-
-            enemies: [],
-            objects: [],
-            systems: []
-        };
-
-        // ==========================================
-        // 🚀 SPACE GAME
-        // ==========================================
-
-        if (
-            text.includes("space") ||
-            text.includes("spaceship") ||
-            text.includes("asteroid")
-        ) {
-            game.title = "Space Shooter";
-            game.mode = "3D";
-            game.type = "spaceShooter";
-
-            game.player = {
-                enabled: true,
-                type: "spaceship"
-            };
-
-            if (text.includes("asteroid")) {
-                game.objects.push({
-                    type: "asteroid",
-                    count: 20
-                });
+            if (aiInput) {
+                aiInput.focus();
             }
 
-            game.systems.push(
-                "shooting",
-                "collision",
-                "score"
+            if (!aiRunning) {
+                await startJungleHelper();
+            }
+        }
+    });
+}
+
+// ==========================================
+// START JUNGLE HELPER
+// ==========================================
+
+async function startJungleHelper() {
+
+    if (aiRunning) {
+        return true;
+    }
+
+    if (!window.jungleAI) {
+        setAIStatus("Offline");
+
+        addAIMessage(
+            "system",
+            "Jungle Helper bridge is not available."
+        );
+
+        return false;
+    }
+
+    setAIStatus("Starting...");
+
+    try {
+
+        const result =
+            await window.jungleAI.start();
+
+        if (!result || !result.success) {
+
+            aiRunning = false;
+
+            setAIStatus("Offline");
+
+            addAIMessage(
+                "system",
+                "Could not start Jungle Helper: " +
+                (result?.error || "Unknown error.")
             );
+
+            return false;
         }
 
-        // ==========================================
-        // 🏃 PLATFORMER
-        // ==========================================
+        aiRunning = true;
 
-        else if (
-            text.includes("platformer") ||
-            text.includes("platform")
-        ) {
-            game.title = "Jungle Platformer";
-            game.mode = "2D";
-            game.type = "platformer";
+        setAIStatus("Online");
 
-            game.player = {
-                enabled: true,
-                type: "character"
-            };
+        return true;
 
-            game.objects.push({
-                type: "platform",
-                count: 10
-            });
+    } catch (error) {
 
-            game.systems.push(
-                "movement",
-                "jumping",
-                "collision",
-                "score"
-            );
-        }
+        aiRunning = false;
 
-        // ==========================================
-        // 🌴 JUNGLE GAME
-        // ==========================================
+        setAIStatus("Offline");
 
-        else if (
-            text.includes("jungle") ||
-            text.includes("forest")
-        ) {
-            game.title = "Jungle Adventure";
-            game.mode = "3D";
-            game.type = "exploration";
+        addAIMessage(
+            "system",
+            "Jungle Helper startup error: " +
+            error.message
+        );
 
-            game.objects.push(
-                {
-                    type: "tree",
-                    count: 30
-                },
-                {
-                    type: "rock",
-                    count: 15
-                }
-            );
-
-            game.systems.push(
-                "movement",
-                "exploration"
-            );
-        }
-
-        // ==========================================
-        // 📤 RETURN BLUEPRINT
-        // ==========================================
-
-        console.log("📋 Generated blueprint:", game);
-
-        return game;
+        return false;
     }
 }
 
+// ==========================================
+// SEND MESSAGE
+// ==========================================
+
+async function sendAIMessage() {
+
+    if (aiSending) {
+        return;
+    }
+
+    const message =
+        aiInput.value.trim();
+
+    if (!message) {
+        return;
+    }
+
+    if (!aiRunning) {
+
+        const started =
+            await startJungleHelper();
+
+        if (!started) {
+            return;
+        }
+    }
+
+    aiSending = true;
+
+    addAIMessage(
+        "user",
+        message
+    );
+
+    aiInput.value = "";
+
+    aiSendButton.disabled = true;
+    aiInput.disabled = true;
+
+    const thinkingMessage =
+        addAIMessage(
+            "assistant",
+            "Thinking..."
+        );
+
+    try {
+
+        const result =
+            await window.jungleAI.send(message);
+
+        thinkingMessage.remove();
+
+        if (
+            result &&
+            result.success
+        ) {
+
+            addAIMessage(
+                "assistant",
+                result.response ||
+                "Jungle Helper returned an empty response."
+            );
+
+        } else {
+
+            addAIMessage(
+                "system",
+                "Jungle Helper error: " +
+                (
+                    result?.error ||
+                    "Unknown error."
+                )
+            );
+        }
+
+    } catch (error) {
+
+        thinkingMessage.remove();
+
+        addAIMessage(
+            "system",
+            "AI connection error: " +
+            error.message
+        );
+    }
+
+    aiSending = false;
+
+    aiSendButton.disabled = false;
+    aiInput.disabled = false;
+
+    aiInput.focus();
+}
 
 // ==========================================
-// 🌴 GLOBAL JUNGLE AI
+// SEND BUTTON
 // ==========================================
 
-window.JungleAI = JungleAI;
+if (aiSendButton) {
 
-console.log("🤖 JungleAI is ready!");
+    aiSendButton.addEventListener(
+        "click",
+        sendAIMessage
+    );
+}
+
+// ==========================================
+// ENTER TO SEND
+// ==========================================
+
+if (aiInput) {
+
+    aiInput.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                sendAIMessage();
+            }
+        }
+    );
+}
+
+// ==========================================
+// STATUS
+// ==========================================
+
+function setAIStatus(status) {
+
+    if (!aiStatus) {
+        return;
+    }
+
+    if (status === "Online") {
+
+        aiStatus.textContent = "Online";
+        aiStatus.className =
+            "aiStatus online";
+
+        return;
+    }
+
+    if (status === "Starting...") {
+
+        aiStatus.textContent = "Starting...";
+        aiStatus.className =
+            "aiStatus starting";
+
+        return;
+    }
+
+    aiStatus.textContent = "Offline";
+    aiStatus.className =
+        "aiStatus offline";
+}
+
+// ==========================================
+// DISPLAY MESSAGE
+// ==========================================
+
+function addAIMessage(type, text) {
+
+    if (!aiMessages) {
+        return null;
+    }
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "aiMessage aiMessage-" + type;
+
+    const name =
+        document.createElement("div");
+
+    name.className =
+        "aiMessageName";
+
+    if (type === "user") {
+
+        name.textContent = "You";
+
+    } else if (type === "assistant") {
+
+        name.textContent =
+            "🌴 Jungle Helper";
+
+    } else {
+
+        name.textContent =
+            "System";
+    }
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "aiMessageText";
+
+    content.textContent =
+        text;
+
+    message.appendChild(name);
+    message.appendChild(content);
+
+    aiMessages.appendChild(message);
+
+    aiMessages.scrollTop =
+        aiMessages.scrollHeight;
+
+    return message;
+}
+
+// ==========================================
+// ELECTRON STATUS EVENTS
+// ==========================================
+
+if (window.jungleAI) {
+
+    window.jungleAI.onStatus((status) => {
+
+        if (status === "started") {
+
+            aiRunning = true;
+
+            setAIStatus("Online");
+        }
+
+        if (status === "stopped") {
+
+            aiRunning = false;
+
+            setAIStatus("Offline");
+        }
+    });
+
+    window.jungleAI.onOutput((text) => {
+
+        if (!text) {
+            return;
+        }
+
+        console.log(
+            "[Jungle Helper]",
+            text
+        );
+    });
+}

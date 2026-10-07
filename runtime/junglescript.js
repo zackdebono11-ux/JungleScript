@@ -1322,6 +1322,49 @@ if (serverSizeMatch) {
     return;
 
 }
+// ==========================================
+// 🖥️ server-start()
+// ==========================================
+
+if (line === "server-start()") {
+
+    if (
+        !window.jungleElectron ||
+        typeof window.jungleElectron.startServer !== "function"
+    ) {
+
+        this.error(
+            lineNumber,
+            "server-start() is only available in the JungleScript desktop app."
+        );
+
+        return;
+    }
+
+    const result =
+        await window.jungleElectron.startServer(
+            this.serverSize
+        );
+
+    if (!result.success) {
+
+        this.error(
+            lineNumber,
+            result.error ||
+            "Failed to start JungleScript server."
+        );
+
+        return;
+    }
+
+    this.serverRunning = true;
+
+    console.log(
+        `🌴 ${result.message}`
+    );
+
+    return;
+}
 
 
         // ==========================================
@@ -1716,11 +1759,9 @@ if (launchUpgradeMatch) {
     try {
 
         const result =
-            await window
-                .jungleElectron
-                .launchUpgrade(
-                    filePath
-                );
+    await window.jungleElectron.startServer(
+        this.serverSize
+    );
 
         if (
             result &&
