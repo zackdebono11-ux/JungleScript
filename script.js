@@ -2230,10 +2230,10 @@ if (minimizeTerminalButton) {
         terminalPanel.classList.toggle("minimized");
 
         if (terminalPanel.classList.contains("minimized")) {
-            minimizeTerminalButton.textContent = "□";
+            minimizeTerminalButton.textContent = "^";
             minimizeTerminalButton.title = "Restore terminal";
         } else {
-            minimizeTerminalButton.textContent = "─";
+            minimizeTerminalButton.textContent = "v";
             minimizeTerminalButton.title = "Minimize terminal";
 
             if (terminalInput) {
