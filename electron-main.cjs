@@ -77,37 +77,7 @@ function createWindow() {
         );
 
     }
-    window.webContents.once("did-finish-load", () => {
-
-    console.log(
-        "🌴 JungleScript UI loaded."
-    );
-
-    setTimeout(() => {
-
-        startJungleHelperSession()
-            .then(result => {
-
-                if (result.success) {
-
-                    console.log(
-                        "🤖 Jungle Helper is ready."
-                    );
-
-                } else {
-
-                    console.error(
-                        "❌ Jungle Helper startup failed:",
-                        result.error
-                    );
-
-                }
-
-            });
-
-    }, 100);
-
-});
+   
 
 
 
@@ -137,7 +107,7 @@ ipcMain.handle(
                         ],
                         {
                             cwd: __dirname,
-                            shell: false
+                            shell: true,
                         }
                     );
 
@@ -448,24 +418,51 @@ ipcMain.handle(
 let jungleHelperSessionId = null;
 let jungleHelperStartPromise = null;
 
+
 // ==========================================
-// RUN SALESFORCE CLI COMMAND
+// 🌴 RUN SALESFORCE CLI COMMAND
 // ==========================================
 function runSalesforce(args) {
-    return new Promise((resolve, reject) => {
-        const sfCli =
-            "C:\\Program Files\\sf\\client\\bin\\run.js";
 
-        console.log("🌴 Running Salesforce directly:");
-        console.log("Command:", sfCli);
+    return new Promise((resolve) => {
+
+        console.log("🌴 Running Salesforce:");
         console.log("Arguments:", args);
 
+        const escapeWindowsArg = (value) => {
+            value = String(value);
+
+            if (!value.length) {
+                return '""';
+            }
+
+            // Quote arguments containing spaces or special characters.
+            if (/[\s"&|<>^]/.test(value)) {
+                return `"${value
+                    .replace(/\\/g, "\\\\")
+                    .replace(/"/g, '\\"')}"`;
+            }
+
+            return value;
+        };
+
+        const commandLine =
+            "sf.cmd " +
+            args
+                .map(escapeWindowsArg)
+                .join(" ");
+
+        console.log(
+            "🌴 Command line:",
+            commandLine
+        );
+
         const child = spawn(
-            process.execPath,
-            [sfCli, ...args],
+            commandLine,
             {
                 cwd: JUNGLE_HELPER_PROJECT,
                 windowsHide: true,
+                shell: true,
                 stdio: ["ignore", "pipe", "pipe"]
             }
         );
@@ -473,45 +470,77 @@ function runSalesforce(args) {
         let stdout = "";
         let stderr = "";
 
-        child.stdout.on("data", data => {
-            stdout += data.toString();
-        });
+        child.stdout.on(
+            "data",
+            (data) => {
 
-        child.stderr.on("data", data => {
-            stderr += data.toString();
-        });
+                const text =
+                    data.toString();
 
-        child.on("error", error => {
-    console.error(
-        "❌ Salesforce process error:",
-        error
-    );
+                stdout += text;
 
-    resolve({
-        success: false,
-        code: null,
-        output: "",
-        error: error.message,
-        stdout: "",
-        stderr: error.message
-    });
-});
+                console.log(
+                    "Salesforce:",
+                    text
+                );
+            }
+        );
 
-        child.on("close", code => {
-            console.log(
-                "🌴 Salesforce exit code:",
-                code
-            );
+        child.stderr.on(
+            "data",
+            (data) => {
 
-            resolve({
-                success: code === 0,
-                code,
-                output: stdout.trim(),
-                error: stderr.trim(),
-                stdout: stdout.trim(),
-                stderr: stderr.trim()
-            });
-        });
+                const text =
+                    data.toString();
+
+                stderr += text;
+
+                console.error(
+                    "Salesforce error:",
+                    text
+                );
+            }
+        );
+
+        child.on(
+            "error",
+            (error) => {
+
+                console.error(
+                    "❌ Salesforce process error:",
+                    error
+                );
+
+                resolve({
+                    success: false,
+                    code: null,
+                    output: stdout.trim(),
+                    error: error.message,
+                    stdout: stdout.trim(),
+                    stderr: stderr.trim()
+                });
+            }
+        );
+
+        child.on(
+            "close",
+            (code) => {
+
+                console.log(
+                    "🌴 Salesforce exit code:",
+                    code
+                );
+
+                resolve({
+                    success: code === 0,
+                    code,
+                    output: stdout.trim(),
+                    error: stderr.trim(),
+                    stdout: stdout.trim(),
+                    stderr: stderr.trim()
+                });
+            }
+        );
     });
 }
 
@@ -658,6 +687,15 @@ async function startJungleHelperSession() {
                 data.result?.id ||
                 data.id ||
                 null;
+                console.log(
+    "🌴 Parsed Salesforce data:",
+    data
+);
+
+console.log(
+    "🌴 Extracted session ID:",
+    jungleHelperSessionId
+);
 
             if (!jungleHelperSessionId) {
 
@@ -870,55 +908,36 @@ ipcMain.handle(
 
 
 // ==========================================
-// APP START
+// 🌴 APP START
 // ==========================================
 
 app.whenReady().then(() => {
 
-    createWindow();
+    startJungleHelperSession()
+        .then(result => {
 
-    // ==========================================
-    // 🌴 PRE-START JUNGLE HELPER
-    // ==========================================
-    // Start Salesforce in the background.
-    // This does NOT block the Electron window.
-
-    setTimeout(() => {
-
-        startJungleHelperSession()
-            .then(result => {
-
-                if (result.success) {
-
-                    console.log(
-                        "🌴 Jungle Helper is ready before the user opens the AI panel."
-                    );
-
-                } else {
-
-                    console.error(
-                        "❌ Jungle Helper background startup failed:",
-                        result.error
-                    );
-
-                }
-
-            })
-            .catch(error => {
-
-                console.error(
-                    "❌ Jungle Helper background startup error:",
-                    error
+            if (result.success) {
+                console.log(
+                    "🌴 Jungle Helper is ready before the user opens the AI panel."
                 );
+            } else {
+                console.error(
+                    "❌ Jungle Helper background startup failed:",
+                    result.error
+                );
+            }
 
-            });
+        })
+        .catch(error => {
 
-    }, 500);
+            console.error(
+                "❌ Jungle Helper background startup error:",
+                error
+            );
 
+        });
 
-    // ==========================================
-    // 🌴 MACOS WINDOW REACTIVATION
-    // ==========================================
+    createWindow();
 
     app.on(
         "activate",
@@ -929,17 +948,12 @@ app.whenReady().then(() => {
                     .getAllWindows()
                     .length === 0
             ) {
-
                 createWindow();
-
             }
 
         }
     );
-
 });
-
-
 // ==========================================
 // APP CLOSE
 // ==========================================
