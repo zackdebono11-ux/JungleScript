@@ -148,11 +148,14 @@ struct Vertex {
     position: [f32; 3],
     normal: [f32; 3],
 }
+
 #[repr(C)]
 #[derive(Clone, Copy)]
 struct CameraBuffer {
     transform: [[f32; 4]; 4],
+    light_transform: [[f32; 4]; 4],
 }
+
 
 fn main() {
     unsafe {
@@ -315,9 +318,10 @@ let light_projection =
     );
 
 let light_transform =
-    light_projection * light_view;
-    let light_data = CameraBuffer {
+    light_projection * light_view * model;
+ let light_data = CameraBuffer {
     transform: light_transform.to_cols_array_2d(),
+    light_transform: Mat4::IDENTITY.to_cols_array_2d(),
 };
 
 println!("✅ Shadow light matrix created");
